@@ -1,9 +1,9 @@
 'use strict';
 
-import Component from '../../component.js'
+import Component from '../../component.js';
 
 export default class PhoneCatalog extends Component {
-  constructor({ element, phones, onPhoneSelected }) {
+  constructor({ element, phones, onPhoneSelected, onAddToCart }) {
     super({ element });
 
     this._phones = phones;
@@ -13,7 +13,15 @@ export default class PhoneCatalog extends Component {
       let phoneLink = event.delegateTarget;
 
       onPhoneSelected(phoneLink.dataset.phoneId);
-    })
+    });
+
+    this.on('click', '[data-element="add-phone-to-shopping-cart"]', (event) => {
+      let phoneLink = event.delegateTarget;
+      let phoneId = phoneLink.dataset.phoneId;
+      let phoneName = phoneLink.dataset.phoneName;
+
+      onAddToCart(phoneId, phoneName);
+    });
   }
 
   _render() {
@@ -32,7 +40,10 @@ export default class PhoneCatalog extends Component {
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success" >
+              <a class="btn btn-success"
+                 data-element="add-phone-to-shopping-cart"
+                 data-phone-id="${ phone.id }"
+                 data-phone-name="${ phone.name }">
                 Add
               </a>
             </div>

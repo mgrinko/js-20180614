@@ -3,16 +3,18 @@
 import Component from '../../component.js';
 
 export default class PhoneViewer extends Component {
-  constructor({ element, onBackClick }) {
+  constructor({ element, onBackClick, onAddToCart }) {
     super({ element });
 
     this._onBackClick = onBackClick;
+    this._onAddToCart = onAddToCart;
+
+    this._addEventHandlers();
   }
 
   showPhone(phone) {
     this._phone = phone;
     this._render();
-    this._addEventHandlers();
 
     super.show();
   }
@@ -24,7 +26,9 @@ export default class PhoneViewer extends Component {
       <img class="phone" src="${ phonePics[0] }">
 
       <button data-back-to-catalog-btn>Back</button>
-      <button>Add to basket</button>
+      <button data-element="add-phone-to-shopping-cart"
+              data-phone-id="${ this._phone.id }"
+              data-phone-name="${ this._phone.name }">Add to basket</button>
   
       <h1>${ this._phone.name }</h1>
   
@@ -41,21 +45,21 @@ export default class PhoneViewer extends Component {
   }
 
   _addEventHandlers() {
-    this._element.querySelector('[data-back-to-catalog-btn]').addEventListener(
-      'click',
-      this._onBackClick.bind(this)
-    );
+    this.on('click', '[data-back-to-catalog-btn]', this._onBackClick.bind(this));
 
-    let mainPictureContainer = this._element.querySelector('img.phone');
-    this._element.querySelectorAll('.phone-thumbs img.thumb').forEach((thumb) => {
-      thumb.addEventListener(
-        'click',
-        (event) => {
-          let pictureSrc = event.target.getAttribute('src');
+    this.on('click', '.phone-thumbs img.thumb', (event) => {
+      let mainPictureContainer = this._element.querySelector('img.phone');
+      let pictureSrc = event.delegateTarget.getAttribute('src');
 
-          mainPictureContainer.setAttribute('src', pictureSrc);
-        }
-      );
+      mainPictureContainer.setAttribute('src', pictureSrc);
+    });
+
+    this.on('click', '[data-element="add-phone-to-shopping-cart"]', (event) => {
+      let phoneLink = event.delegateTarget;
+      let phoneId = phoneLink.dataset.phoneId;
+      let phoneName = phoneLink.dataset.phoneName;
+
+      this._onAddToCart(phoneId, phoneName);
     });
   }
 }

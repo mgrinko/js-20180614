@@ -2,6 +2,7 @@
 
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
+import ShoppingCart from './components/shopping-cart.js';
 import PhoneService from './services/phone-service.js';
 
 export default class PhonesPage {
@@ -12,6 +13,7 @@ export default class PhonesPage {
 
     this._initCatalog();
     this._initViewer();
+    this._initShoppingCart();
   }
 
   _initCatalog() {
@@ -30,6 +32,10 @@ export default class PhonesPage {
             this._catalog.hide();
             this._viewer.showPhone(phoneData);
           });
+      },
+
+      onAddToCart: (phoneId, phoneName) => {
+        this._shoppingCart.add(phoneId, phoneName);
       }
     });
   }
@@ -41,7 +47,17 @@ export default class PhonesPage {
       onBackClick: () => {
         this._viewer.hide();
         this._catalog.show();
+      },
+
+      onAddToCart: (phoneId, phoneName) => {
+        this._shoppingCart.add(phoneId, phoneName);
       }
+    });
+  }
+
+  _initShoppingCart() {
+    this._shoppingCart = new ShoppingCart({
+      element: this._element.querySelector('[data-component="shopping-cart"]')
     });
   }
 
@@ -52,29 +68,24 @@ export default class PhonesPage {
       
           <!--Sidebar-->
           <div class="col-md-2">
-            <section>
-              <p>
-                Search:
-                <input>
-              </p>
-      
-              <p>
-                Sort by:
-                <select>
-                  <option value="name">Alphabetical</option>
-                  <option value="age">Newest</option>
-                </select>
-              </p>
-            </section>
-      
-            <section>
-              <p>Shopping Cart</p>
-              <ul>
-                <li>Phone 1</li>
-                <li>Phone 2</li>
-                <li>Phone 3</li>
-              </ul>
-            </section>
+            <div class="js-sidebar">
+              <section>
+                <p>
+                  Search:
+                  <input>
+                </p>
+        
+                <p>
+                  Sort by:
+                  <select>
+                    <option value="name">Alphabetical</option>
+                    <option value="age">Newest</option>
+                  </select>
+                </p>
+              </section>
+        
+              <section data-component="shopping-cart"></section>
+            </div>
           </div>
       
           <!--Main content-->
