@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
@@ -31,6 +31,11 @@ export default class PhonesPage {
   _initViewer() {
     this._viewer = new PhoneViewer({
       element: this._element.querySelector('[data-component="phone-viewer"]'),
+
+      onBackClick: () => {
+        this._viewer.hide();
+        this._catalog.show();
+      }
     });
   }
 

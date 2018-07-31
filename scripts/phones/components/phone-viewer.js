@@ -1,8 +1,13 @@
-'use strict'
+'use strict';
 
 import Component from '../../component.js';
 
 export default class PhoneViewer extends Component {
+  constructor({ element, onBackClick }) {
+    super({ element });
+
+    this._onBackClick = onBackClick;
+  }
 
   showPhone(phone) {
     this._phone = phone;
@@ -15,7 +20,7 @@ export default class PhoneViewer extends Component {
     this._element.innerHTML = `
       <img class="phone" src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
 
-      <button>Back</button>
+      <button data-back-to-catalog-btn>Back</button>
       <button>Add to basket</button>
   
   
@@ -44,5 +49,10 @@ export default class PhoneViewer extends Component {
         </li>
       </ul>
     `;
+
+    this._element.querySelector('[data-back-to-catalog-btn]').addEventListener(
+        'click',
+        this._onBackClick.bind(this)
+    );
   }
 }
