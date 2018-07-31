@@ -12,6 +12,7 @@ export default class PhoneViewer extends Component {
   showPhone(phone) {
     this._phone = phone;
     this._render();
+    this._addEventHandlers();
 
     super.show();
   }
@@ -32,15 +33,29 @@ export default class PhoneViewer extends Component {
       <ul class="phone-thumbs">
         ${ phonePics.map(pic => `
           <li>
-            <img src="${ pic }">
+            <img class="thumb" src="${ pic }">
           </li>
         `).join('') }
       </ul>
     `;
+  }
 
+  _addEventHandlers() {
     this._element.querySelector('[data-back-to-catalog-btn]').addEventListener(
-        'click',
-        this._onBackClick.bind(this)
+      'click',
+      this._onBackClick.bind(this)
     );
+
+    let mainPictureContainer = this._element.querySelector('img.phone');
+    this._element.querySelectorAll('.phone-thumbs img.thumb').forEach((thumb) => {
+      thumb.addEventListener(
+        'click',
+        (event) => {
+          let pictureSrc = event.target.getAttribute('src');
+
+          mainPictureContainer.setAttribute('src', pictureSrc);
+        }
+      );
+    });
   }
 }
