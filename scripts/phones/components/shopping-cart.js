@@ -47,7 +47,6 @@ export default class ShoppingCart extends Component {
   add(phoneId, phoneName) {
     let quantity = 1;
     if (this._items.has(phoneId)) {
-      console.log(this._items.get(phoneId).quantity);
       quantity = this._items.get(phoneId).quantity + 1;
     }
 
