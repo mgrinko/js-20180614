@@ -227,7 +227,7 @@ const PhoneService = {
   },
 
   get(phoneId) {
-    return phoneFromServer;
+    return fetch(`phones/${ phoneId }.json`);
   }
 };
 

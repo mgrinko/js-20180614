@@ -20,10 +20,16 @@ export default class PhonesPage {
       phones: PhoneService.getAll(),
 
       onPhoneSelected: (phoneId) => {
-        let phone = PhoneService.get(phoneId);
+        let phoneDetailsRequest = PhoneService.get(phoneId);
 
-        this._catalog.hide();
-        this._viewer.showPhone(phone);
+        phoneDetailsRequest
+          .then((response) => {
+            return response.json();
+          })
+          .then((phoneData) => {
+            this._catalog.hide();
+            this._viewer.showPhone(phoneData);
+          });
       }
     });
   }
