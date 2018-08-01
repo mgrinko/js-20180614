@@ -14,4 +14,15 @@ export default  class Component {
         this._element.classList.add(HIDDEN_CLASS);
     }
 
+    on(eventName,selector,callback) {
+        this._element.addEventListener(eventName, () => {
+            let delegateTarget =  event.target.closest(selector);
+            if (!delegateTarget) {
+                return;
+            }
+            event.delegateTarget = delegateTarget;
+            callback(event);
+        });
+    }
+
 }
