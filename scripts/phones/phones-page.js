@@ -20,8 +20,8 @@ export default class PhonesPage {
          element: this._element.querySelector('[data-component="phone-catalog"]'),
          phones: PhoneService.getAll(),
 
-         onPhoneSelected: (phoneId)=> {
-             let phone = PhoneService.get(phoneId)
+         onPhoneSelected: (phoneId) => {
+             let phone = PhoneService.get(phoneId);
              this._catalog.hide();
              this._viewer.showPhone(phone)
          }
