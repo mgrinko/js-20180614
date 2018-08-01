@@ -4,6 +4,15 @@ import Component from '../../component.js';
 
 export default class PhoneViewer extends Component {
 
+  constructor({ element, backLink }) {
+    super({ element })
+
+    this.on('click', '[data-back]', (event) => {
+      backLink();
+    })
+
+  }
+
   showPhone(phone) {
     this._phone = phone;
 
@@ -21,16 +30,17 @@ export default class PhoneViewer extends Component {
     	let galleryImage = event.delegateTarget,
     		galleryImageLink = galleryImage.getAttribute('src'),
     		large_image = document.querySelector('#large_image');
-    		
+
     	large_image.setAttribute('src', galleryImageLink);
     })
+
   }
 
   _render() {
     this._element.innerHTML = `
       <img id="large_image" class="phone" src="${this._phone.images[0]}">
 
-      <button>Back</button>
+      <button data-back>Back</button>
       <button>Add to basket</button>
   
       <h1>${this._phone.id}</h1>
