@@ -2,7 +2,7 @@
 
 import Component from "../../component.js";
 
-export default class PhoneCatalog extends Component{
+export default class PhoneViewer extends Component{
 
     showPhone (phone) {
         this._phone = phone;
