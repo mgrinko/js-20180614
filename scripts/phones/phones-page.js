@@ -21,7 +21,7 @@ export default class PhonesPage {
 
       onPhoneSelected: (phoneId) => {
         let phone = PhoneService.get(phoneId);
-
+        
         this._catalog.hide();
         this._viewer.showPhone(phone);
       }
