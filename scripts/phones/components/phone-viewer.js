@@ -1,22 +1,45 @@
 'use strict'
 
 import Component from '../../component.js';
+import PhoneCatalog from "../components/phone-catalog.js";
+import PhonesPage from "../phones-page";
+
+console.log(PhoneCatalog);
 
 export default class PhoneViewer extends Component {
+    constructor({element}) {
+        super({ element });
 
-  showPhone(phone) {
-    this._phone = phone;
-    this._render();
+        this.on('click', '.phone-thumbs li img', (event) => {
+            let thumbnail = event.delegateTarget;
 
-    super.show();
-  }
+            this.initGallery(thumbnail.getAttribute('src'))
+        });
 
-  _render() {
-    this._element.innerHTML = `
+        this.on('click', '.btn-back', (event) => {
+            let btnBack = event.delegateTarget;
+            super.hide();
+        });
+    }
+
+    showPhone(phone) {
+        this._phone = phone;
+        this._render();
+
+        super.show();
+    }
+
+    initGallery(thumbnailSrc) {
+        let mainImage = document.querySelector('.phone');
+        mainImage.setAttribute('src', thumbnailSrc);
+    }
+
+    _render() {
+        this._element.innerHTML = `
       <img class="phone" src="img/phones/motorola-xoom-with-wi-fi.0.jpg">
 
-      <button>Back</button>
-      <button>Add to basket</button>
+      <button class="btn-back">Back</button>
+      <button class="btn-success">Add to basket</button>
   
   
       <h1>Motorola XOOM™ with Wi-Fi</h1>
@@ -44,5 +67,5 @@ export default class PhoneViewer extends Component {
         </li>
       </ul>
     `;
-  }
+    }
 }

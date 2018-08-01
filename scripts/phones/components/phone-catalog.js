@@ -1,37 +1,58 @@
-'use strict'
+'use strict';
 
 import Component from '../../component.js'
 
 export default class PhoneCatalog extends Component {
-  constructor({ element, phones, onPhoneSelected }) {
-    super({ element })
+    constructor({element, phones, onPhoneSelected}) {
+        super({element});
 
-    this._phones = phones;
-    this._render();
+        this._phones = phones;
+        this._cartItems = [];
+        this._render();
 
-    // this._element.addEventListener('click', (event) => {
-    //   let delegateTarget = event.target.closest('[data-element="phone-link"]');
-    //
-    //   if (!delegateTarget) {
-    //     return;
-    //   }
-    //
-    //   event.delegateTarget = delegateTarget;
-    //
-    //   let phoneLink = event.delegateTarget;
-    //
-    //   this._onPhoneSelected(phoneLink.dataset.phoneId);
-    // });
+        this._cart = document.getElementById('cart');
 
-    this.on('click', '[data-element="phone-link"]', (event) => {
-      let phoneLink = event.delegateTarget;
+        this.on('click', '[data-element="phone-link"]', (event) => {
+            let phoneLink = event.delegateTarget;
 
-      onPhoneSelected(phoneLink.dataset.phoneId);
-    })
-  }
+            onPhoneSelected(phoneLink.dataset.phoneId);
+        });
 
-  _render() {
-    this._element.innerHTML = `
+        this.on('click', '.btn-success', (event) => {
+            let itemLink = event.delegateTarget;
+
+            this.addToCart(itemLink.dataset.phoneId);
+        });
+
+        this.on('click', '.btn-remove', (event) => {
+            let item = event.delegateTarget;
+
+            this.removeFromCart(item.parentElement().dataset.phoneId);
+        })
+    }
+
+    addToCart(phoneId) {
+        this._cartItems.push(phoneId);
+        this.renderCart();
+    }
+
+    removeFromCart(item) {
+        this._cartItems.splice(this._cartItems.indexOf(item), 1);
+        this.renderCart();
+    }
+
+    renderCart() {
+        this._cart.innerHTML = `
+    ${ this._cartItems.map(item => `
+      <li class="cart-item" data-phone-id="${item }">
+      <p>${item }</p> <button class="btn-remove">Удалить из корзины</button>
+        </li>
+      `).join('') }
+    `;
+    }
+
+    _render() {
+        this._element.innerHTML = `
       <ul class="phones">
         ${ this._phones.map(phone => `
         
@@ -46,7 +67,7 @@ export default class PhoneCatalog extends Component {
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success" >
+              <a data-phone-id="${ phone.id }" class="btn btn-success" >
                 Add
               </a>
             </div>
@@ -65,5 +86,5 @@ export default class PhoneCatalog extends Component {
         `).join('') }
       </ul>
     `;
-  }
+    }
 }
