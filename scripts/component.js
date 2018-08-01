@@ -15,17 +15,27 @@ export default class Component {
     this._element.classList.add(HIDDEN_CLASS)
   }
 
-  on(eventName, selector, callback) {
-    this._element.addEventListener(eventName, (event) => {
-      let delegateTarget = event.target.closest(selector);
+  // on(eventName, selector, callback) {
+  //   this._element.addEventListener(eventName, (event) => {
+  //     let delegateTarget = event.target.closest(selector);
 
-      if (!delegateTarget) {
-        return;
-      }
+  //     if (!delegateTarget) {
+  //       return;
+  //     }
 
-      event.delegateTarget = delegateTarget;
+  //     event.delegateTarget = delegateTarget;
 
-      callback(event);
-    });
+  //     callback(event);
+  //   });
+  // }
+
+  on(eventName, callback) {
+    this._element.addEventListener(eventName, callback);
+  }
+
+  _trigger(eventName, detail) {
+    let customEvent = new CustomEvent(eventName, { detail });
+
+    this._element.dispatchEvent(customEvent);
   }
 }
