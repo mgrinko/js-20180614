@@ -3,7 +3,7 @@
 import Component from '../../component.js'
 
 export default class PhoneCatalog extends Component {
-  constructor({ element, phones, onPhoneSelected }) {
+  constructor({ element, phones, onPhoneSelected, addToCart }) {
     super({ element })
 
     this._phones = phones;
@@ -28,6 +28,11 @@ export default class PhoneCatalog extends Component {
 
       onPhoneSelected(phoneLink.dataset.phoneId);
     })
+
+    this.on('click', '[data-add-cart]', (event) => {
+      let phoneLink = event.delegateTarget;
+      addToCart(phoneLink.dataset.phoneId);
+    })
   }
 
   _render() {
@@ -46,7 +51,7 @@ export default class PhoneCatalog extends Component {
             </a>
   
             <div class="phones__btn-buy-wrapper">
-              <a class="btn btn-success" >
+              <a class="btn btn-success" data-add-cart data-phone-id="${ phone.id }">
                 Add
               </a>
             </div>

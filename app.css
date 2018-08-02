@@ -109,3 +109,10 @@ ul.specs dt {
 h1 {
   border-bottom: 1px solid gray;
 }
+
+.remove{
+  margin-left: 10px;
+  font-weight: 700;
+  color: #ff0000;
+  cursor: pointer;
+}
