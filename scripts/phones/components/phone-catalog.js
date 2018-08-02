@@ -4,7 +4,7 @@ import Component from "../../component.js";
 
 export default class PhoneCatalog extends Component{
     constructor ({element, phones, onPhoneSelected}) {
-        super ({element})
+        super ({element});
         this._phones = phones;
 
         this._render ();
