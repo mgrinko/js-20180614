@@ -6,9 +6,6 @@ export default class PhoneViewer extends Component{
        constructor({element, onButtonBackClick}){
            super({element});
 
-           this._rezult = null;
-
-
            this.on('click','[data-button="button-back"]',(event)=>{
                let buttonBack = event.delegateTarget;
                onButtonBackClick();
@@ -16,9 +13,7 @@ export default class PhoneViewer extends Component{
            });
 
            this.on('click','[data-phone-image]',(event)=>{
-               this._rezult = event.delegateTarget.src;
-               this._render();
-               super.show();
+               this._element.firstElementChild.src = `${event.delegateTarget.src}`;
            });
        }
     showPhone (phone) {
@@ -27,7 +22,6 @@ export default class PhoneViewer extends Component{
 
         super.show();
 
-      //  console.log(this._phone);// все свойства телефонов
     }
 
     _showImagePhone () {
@@ -36,14 +30,15 @@ export default class PhoneViewer extends Component{
         for (let i = 0; i < this._phone.images.length; i++) {
             str += `<li><img src="${this._phone.images[i]}" data-phone-image></li>`
         }
-        console.log(str);
+
       return str;
     };
 
     _render () {
         this._element.innerHTML = `
-           <img class="phone" src="${this._rezult ||this._phone.images[0]}">
-
+      
+           <img class="phone" src="${ this._phone.images[0]}">
+      
     <button data-button="button-back">Back</button>
     <button>Add to basket</button>
 
