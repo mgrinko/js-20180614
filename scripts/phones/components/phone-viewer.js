@@ -4,11 +4,16 @@ import Component from '../../component.js';
 
 export default class PhoneViewer extends Component {
 
-  constructor({ element, backLink }) {
+  constructor({ element, backLink, addToCart }) {
     super({ element })
 
     this.on('click', '[data-back]', (event) => {
       backLink();
+    })
+
+    this.on('click', '[data-add-cart]', (event) => {
+      let phoneLink = event.delegateTarget;
+      addToCart(phoneLink.dataset.phoneId);
     })
 
   }
@@ -41,7 +46,7 @@ export default class PhoneViewer extends Component {
       <img id="large_image" class="phone" src="${this._phone.images[0]}">
 
       <button data-back>Back</button>
-      <button>Add to basket</button>
+      <button data-add-cart data-phone-id="${ this._phone.id }">Add to basket</button>
   
       <h1>${this._phone.id}</h1>
   
