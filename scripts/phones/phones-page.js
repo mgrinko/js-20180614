@@ -1,16 +1,20 @@
 'use strict'
 import PhoneCatalog from './components/phone-catalog.js';
-import PhoneViewer from './components/phone-viewer.js';
+import PhoneViewer from  './components/phone-viewer.js';
 import PhoneService from './services/phone-service.js';
+import ShoppingCart from './components/shopping-cart.js';
+
 
 export default class PhonesPage {
  constructor ({ element }) {
+
   this._element = element;
 
   this._render();
 
   this._initCatalog();
   this._initViewer ();
+  this._initShopCart();
 
 
  }
@@ -19,7 +23,6 @@ export default class PhonesPage {
      this._catalog = new PhoneCatalog ({
          element: this._element.querySelector('[data-component="phone-catalog"]'),
          phones: PhoneService.getAll(),
-
          /*   onPhoneSelected: (phoneId) => {
                 let phone = PhoneService.get(phoneId);
                 this._catalog.hide();
@@ -31,6 +34,7 @@ export default class PhonesPage {
      this._catalog.on ('phoneSelected', (event) => {
         let phoneId = event.detail;
          let phone = PhoneService.get(phoneId);
+
          this._catalog.hide();
          this._viewer.showPhone(phone);
      } );
@@ -39,14 +43,27 @@ export default class PhonesPage {
  _initViewer () {
      this._viewer = new PhoneViewer ({
          element: this._element.querySelector('[data-component="phone-viewer"]'),
-
-         onButtonBackClick: () =>{
+        /* onButtonBackClick: () =>{
          this._catalog.show();
          this._viewer.hide();
-         }
+         }*/
+     });
 
+     this._viewer.on ('moveBack', () => {
+         this._catalog.show();
+         this._viewer.hide();
+     });
+     this._viewer.on ('addPhoneCart', (event) => {
+      let phoneId = event.detail;
+      this._cart.addItem(phoneId);
      });
  }
+
+ _initShopCart () {
+     this._cart = new ShoppingCart({
+         element: this._element.querySelector('[data-component="phone-cart"]'),
+     });
+}
 
  _render() {
   this._element.innerHTML=`<div class="container-fluid">
@@ -69,13 +86,8 @@ export default class PhonesPage {
                 </p>
             </section>
 
-            <section>
-                <p>Shopping Cart</p>
-                <ul>
-                    <li>Phone 1</li>
-                    <li>Phone 2</li>
-                    <li>Phone 3</li>
-                </ul>
+            <section data-component="phone-cart">
+             
             </section>
         </div>
 

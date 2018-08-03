@@ -3,23 +3,24 @@
 import Component from "../../component.js";
 
 export default class PhoneCatalog extends Component{
-    constructor ({element, phones, onPhoneSelected}) {
+    constructor ({element, phones}) {
         super ({element});
         this._phones = phones;
 
-        this._render ();
+        this._render();
 
-        this._element.addEventListener('click', (event) => {
-                let delegateTarget =  event.target.closest('[data-element="phone-link"]');
+        this.on('click','[data-element="phone-link"]', (event) => {
+               /* let delegateTarget =  event.target.closest('[data-element="phone-link"]');
                 if (!delegateTarget) {
                     return;
-                }
-                event.delegateTarget = delegateTarget;
-                let phoneLink = event.delegateTarget;
+                }*/
+           // let delegateTarget =  event.target.closest('[data-element="phone-link"]');
+            //let phoneLink = event.delegateTarget;
 
 
-                let customEvent = new CustomEvent('phoneSelected',{
-                    detail: phoneLink.dataset.phoneId
+               // this._trigger('phoneSelected',event.delegateTarget.dataset.phoneId);
+               let customEvent = new CustomEvent('phoneSelected',{
+                    detail: event.delegateTarget.dataset.phoneId,
                 });
             this._element.dispatchEvent(customEvent);
             });
@@ -31,7 +32,7 @@ export default class PhoneCatalog extends Component{
         })*/
     }
 
-    _render () {
+    _render() {
         this._element.innerHTML = `
          <ul class="phones">
          
@@ -47,7 +48,7 @@ export default class PhoneCatalog extends Component{
             </a>
 
             <div class="phones__btn-buy-wrapper">
-            <a class="btn btn-success">
+            <a class="btn btn-success" data-element="button-add">
             Add
             </a>
             </div>

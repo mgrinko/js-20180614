@@ -8,11 +8,20 @@ export default  class Component {
     }
     show () {
         this._element.classList.remove(HIDDEN_CLASS);
-    }
+    };
 
     hide () {
         this._element.classList.add(HIDDEN_CLASS);
-    }
+    };
+
+    _trigger (eventName,data) {
+
+        let customEvent = new CustomEvent(eventName, {
+            detail: data,
+        });
+
+        this._element.dispatchEvent(customEvent);
+    };
 
     on(eventName,selector,callback) {
 
@@ -22,7 +31,7 @@ export default  class Component {
             return;
         }
 
-        this._element.addEventListener(eventName, () => {
+        this._element.addEventListener(eventName, (event) => {
             let delegateTarget =  event.target.closest(selector);
             if (!delegateTarget) {
                 return;
@@ -30,6 +39,8 @@ export default  class Component {
             event.delegateTarget = delegateTarget;
             callback(event);
         });
-    }
+    };
+
+
 
 }
