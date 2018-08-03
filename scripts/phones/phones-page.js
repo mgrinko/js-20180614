@@ -2,7 +2,7 @@
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import PhoneService from './services/phone-service.js';
-///
+
 export default class PhonesPage {
  constructor ({ element }) {
   this._element = element;
@@ -20,12 +20,20 @@ export default class PhonesPage {
          element: this._element.querySelector('[data-component="phone-catalog"]'),
          phones: PhoneService.getAll(),
 
-         onPhoneSelected: (phoneId) => {
-             let phone = PhoneService.get(phoneId);
-             this._catalog.hide();
-             this._viewer.showPhone(phone)
-         }
+         /*   onPhoneSelected: (phoneId) => {
+                let phone = PhoneService.get(phoneId);
+                this._catalog.hide();
+                this._viewer.showPhone(phone)
+            }
+        });*/
      });
+
+     this._catalog.on ('phoneSelected', (event) => {
+        let phoneId = event.detail;
+         let phone = PhoneService.get(phoneId);
+         this._catalog.hide();
+         this._viewer.showPhone(phone);
+     } );
  }
 
  _initViewer () {

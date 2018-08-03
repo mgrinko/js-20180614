@@ -40,7 +40,7 @@ export default class PhoneViewer extends Component{
            <img class="phone" src="${ this._phone.images[0]}">
       
     <button data-button="button-back">Back</button>
-    <button>Add to basket</button>
+    <button data-button="button-add">Add to basket</button>
 
 
     <h1>${this._phone.id}</h1>
