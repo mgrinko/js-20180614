@@ -2,7 +2,7 @@
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import PhoneService from './services/phone-service.js';
-
+///
 export default class PhonesPage {
  constructor ({ element }) {
   this._element = element;
