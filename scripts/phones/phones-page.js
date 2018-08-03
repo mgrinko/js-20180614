@@ -38,6 +38,11 @@ export default class PhonesPage {
          this._catalog.hide();
          this._viewer.showPhone(phone);
      } );
+
+     this._catalog.on('addPhoneCart', (event) => {
+         let phoneId = event.detail;
+         this._cart.addItem(phoneId);
+     })
  }
 
  _initViewer () {
