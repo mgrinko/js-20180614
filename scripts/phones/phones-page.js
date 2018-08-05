@@ -22,7 +22,6 @@ export default class PhonesPage {
  _initCatalog () {
      this._catalog = new PhoneCatalog ({
          element: this._element.querySelector('[data-component="phone-catalog"]'),
-         phones: PhoneService.getAll(),
          /*   onPhoneSelected: (phoneId) => {
                 let phone = PhoneService.get(phoneId);
                 this._catalog.hide();
@@ -31,19 +30,24 @@ export default class PhonesPage {
         });*/
      });
 
+     PhoneService.getAll( (phones) => {
+         console.log ('phones', phones);
+         this._catalog.showPhones(phones);
+     });
+
      this._catalog.on ('phoneSelected', (event) => {
         let phoneId = event.detail;
-         let phone = PhoneService.get(phoneId);
-
-         this._catalog.hide();
-         this._viewer.showPhone(phone);
-     } );
+         PhoneService.get(phoneId, (phone) => {
+             this._catalog.hide();
+             this._viewer.showPhone(phone);
+         });
+     });
 
      this._catalog.on('addPhoneCart', (event) => {
          let phoneId = event.detail;
          this._cart.addItem(phoneId);
      })
- }
+ };
 
  _initViewer () {
      this._viewer = new PhoneViewer ({

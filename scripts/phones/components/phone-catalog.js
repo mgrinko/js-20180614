@@ -3,11 +3,9 @@
 import Component from "../../component.js";
 
 export default class PhoneCatalog extends Component{
-    constructor ({element, phones}) {
+    constructor ({element}) {
         super({element});
-        this._phones = phones;
 
-        this._render();
 
         this.on('click', '[data-element="phone-link"]', (event) => {
 
@@ -43,12 +41,20 @@ export default class PhoneCatalog extends Component{
         });
     }
 
+    showPhones (phones) {
+        this._phones = phones;
+
+        this._render();
+
+        this.show();
+    }
     _render() {
         this._element.innerHTML = `
          <ul class="phones" 
          >
          
-         ${this._phones.map(phone => `
+        
+          ${  this._phones.map(phone => `
        
          <li class="thumbnail" 
          data-element="phone"
