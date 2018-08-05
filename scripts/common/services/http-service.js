@@ -1,13 +1,9 @@
 "use strict"
 const HttpService = {
 
-   _sendRequest(url, {
-    method = 'GET',
-    successCallback = () => {
-    },
-    errorCallback = console.error,
-} = {})
+   _sendRequest(url, successCallback, errorCallback)
     {
+        let method = 'GET';
 
     let xhr = new XMLHttpRequest();
 
