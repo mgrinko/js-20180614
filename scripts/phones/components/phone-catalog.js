@@ -42,27 +42,32 @@ export default class PhoneCatalog extends Component{
     }
 
     showPhones (phones) {
+
+
         this._phones = phones;
         this._render();
-
-       // this.show();
+        super.show();
     }
-   /*showFilterPhone (filterPhones) {
-     this._phones = filterPhones;
-     console.log(this._phones);
 
-        this._render();
-        console.log(this._element)
 
+ /*  showFilterPhone (phones) {
+        console.log('tut');
+     this._phones = phones;
+     console.log(phones);
+     for (let i = 0; i < phones.length; i++) {
+         console.log(phones[i].id);
+     }
+     this._render();
     };*/
+
+
     _render() {
         this._element.innerHTML = `
          <ul class="phones" 
          >
-         
-        
-          ${  this._phones.map(phone => `
-       
+                         
+           ${ this._phones.map(phone => `
+            
          <li class="thumbnail" 
          data-element="phone"
          data-phone-id="${phone.id}"

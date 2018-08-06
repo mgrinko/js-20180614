@@ -33,7 +33,6 @@ export default class PhonesPage {
      });
 
      PhoneService.getAll( (phones) => {
-
          this._catalog.showPhones(phones);
      });
 
@@ -84,26 +83,22 @@ export default class PhonesPage {
     this._filter.on ('searchPhone', (event) => {
         let searchPhones = event.detail;
 
-        let filterPhone =[];
-        let i = 0;
-        PhoneService.getAll( (phones) => {
+        // перенести выполнение кода в каталог
 
-           phones.map( (phone) => {
+                  let filterPhone =[];
+                PhoneService.getAll( (phones) => {
+                phones.map( (phone) => {
+                    if(~phone.id.indexOf(searchPhones)) {
+                    filterPhone.push(phone);//[i] = phone;
 
-
-               if(~phone.id.indexOf(searchPhones)) {
-
-                   filterPhone[i] = phone;
-                   i++;
-               }
-
-           });
-        });
-        console.log('this._catalog',this._catalog);
-        this._catalog.showPhones(filterPhone);
-
+                    }
+                });
+                this._catalog.showPhones(filterPhone);
+       });
     });
+
     }
+
 
  _render() {
   this._element.innerHTML=`<div class="container-fluid">

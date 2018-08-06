@@ -2,6 +2,7 @@
 
 
 import Component from "../../component.js";
+import PhoneService from '/scripts/phones/services/phone-service.js';
 
 export default class PhoneFilter extends Component{
  constructor ({ element }) {
@@ -14,14 +15,14 @@ export default class PhoneFilter extends Component{
       let phoneSearch = containerSearch.value;
       this._trigger('searchPhone',phoneSearch);
 
-
-     // console.log(phoneSearch);
   });
 
 
   this._render();
 
  }
+
+
  _render() {
   this._element.innerHTML=`
   
