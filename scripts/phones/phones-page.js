@@ -23,10 +23,6 @@ export default class PhonesPage {
       element: this._element.querySelector('[data-component="phone-catalog"]'),
     });
 
-    PhoneService.getAll((phones) => {
-      this._catalog.showPhones(phones)
-    });
-
     this._catalog.on('phoneSelected', (event) => {
       let phoneId = event.detail;
 
@@ -69,7 +65,17 @@ export default class PhonesPage {
   _initFilters() {
     this._filter = new PhonesFilter({
       element: this._element.querySelector('[data-component="phones-filter"]'),
-    })
+    });
+
+    this._filter.on('filterchange', (event) => {
+      let filter = event.detail;
+
+      PhoneService.getAll((phones) => {
+        this._catalog.showPhones(phones)
+      }, filter.searchQuery, filter.sortBy);
+    });
+
+    this._filter.init();
   }
 
   _render() {
