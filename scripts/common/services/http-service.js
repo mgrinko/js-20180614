@@ -13,9 +13,11 @@ const HttpService = {
     xhr.onload = () => {
 
         let responseData = JSON.parse(xhr.responseText);
+        console.log(responseData);
         successCallback(responseData);
     };
     xhr.onerror = () => {
+        console.log('tut');
         errorCallback(new Error(xhr.status + ':' + xhr.statusText));
     };
 

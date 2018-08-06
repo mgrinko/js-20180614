@@ -3,6 +3,7 @@ import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from  './components/phone-viewer.js';
 import PhoneService from './services/phone-service.js';
 import ShoppingCart from './components/shopping-cart.js';
+import PhoneFilter from  './components/phone-filter.js';
 
 
 export default class PhonesPage {
@@ -15,6 +16,7 @@ export default class PhonesPage {
   this._initCatalog();
   this._initViewer ();
   this._initShopCart();
+  this._initPhoneFilter();
 
 
  }
@@ -31,7 +33,7 @@ export default class PhonesPage {
      });
 
      PhoneService.getAll( (phones) => {
-         console.log ('phones', phones);
+
          this._catalog.showPhones(phones);
      });
 
@@ -72,7 +74,36 @@ export default class PhonesPage {
      this._cart = new ShoppingCart({
          element: this._element.querySelector('[data-component="phone-cart"]'),
      });
+
+
 }
+    _initPhoneFilter (){
+    this._filter = new PhoneFilter({
+        element: this._element.querySelector('[data-component="phone-filter"]')
+    });
+    this._filter.on ('searchPhone', (event) => {
+        let searchPhones = event.detail;
+
+        let filterPhone =[];
+        let i = 0;
+        PhoneService.getAll( (phones) => {
+
+           phones.map( (phone) => {
+
+
+               if(~phone.id.indexOf(searchPhones)) {
+
+                   filterPhone[i] = phone;
+                   i++;
+               }
+
+           });
+        });
+        console.log('this._catalog',this._catalog);
+        this._catalog.showPhones(filterPhone);
+
+    });
+    }
 
  _render() {
   this._element.innerHTML=`<div class="container-fluid">
@@ -80,19 +111,8 @@ export default class PhonesPage {
 
         <!--Sidebar-->
         <div class="col-md-2">
-            <section>
-                <p>
-                    Search:
-                    <input>
-                </p>
-
-                <p>
-                    Sort by:
-                    <select>
-                        <option value="name">Alphabetical</option>
-                        <option value="age">Newest</option>
-                    </select>
-                </p>
+            <section data-component="phone-filter">
+           
             </section>
 
             <section data-component="phone-cart">

@@ -43,11 +43,18 @@ export default class PhoneCatalog extends Component{
 
     showPhones (phones) {
         this._phones = phones;
-
         this._render();
 
-        this.show();
+       // this.show();
     }
+   /*showFilterPhone (filterPhones) {
+     this._phones = filterPhones;
+     console.log(this._phones);
+
+        this._render();
+        console.log(this._element)
+
+    };*/
     _render() {
         this._element.innerHTML = `
          <ul class="phones" 

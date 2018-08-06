@@ -7,6 +7,7 @@ export default  class Component {
         this._element = element;
     }
     show () {
+       // console.log (this._element);
         this._element.classList.remove(HIDDEN_CLASS);
     };
 
