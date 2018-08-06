@@ -45,8 +45,14 @@ export default class PhoneCatalog extends Component{
 
 
         this._phones = phones;
-        this._render();
-        super.show();
+        if (Object.keys(phones).length == 0) {
+            console.log('tut');
+            this._renderNo();
+         //   super.show();
+        } else {
+            this._render();
+            super.show();
+        }
     }
 
 
@@ -97,4 +103,14 @@ export default class PhoneCatalog extends Component{
           </ul>
         `;
     }
+    _renderNo () {
+        this._element.innerHTML = `
+         <ul class="phones" 
+         >
+         <li style="font-weight: bolder">По Вашему запросу ничего не найдено!<br>
+                                         Завтра точно что-нибудь найдем!!! :)))))</li>
+         </ul>
+         `
+    };
+
 }

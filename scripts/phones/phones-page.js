@@ -60,9 +60,13 @@ export default class PhonesPage {
      });
 
      this._viewer.on ('moveBack', () => {
-         this._catalog.show();
          this._viewer.hide();
+         PhoneService.getAll( (phones) => {
+             this._catalog.showPhones(phones);
+         });
+      //   this._catalog.show();
      });
+
      this._viewer.on ('addPhoneCart', (event) => {
       let phoneId = event.detail;
       this._cart.addItem(phoneId);
@@ -76,16 +80,18 @@ export default class PhonesPage {
 
 
 }
+
     _initPhoneFilter (){
     this._filter = new PhoneFilter({
         element: this._element.querySelector('[data-component="phone-filter"]')
     });
+
     this._filter.on ('searchPhone', (event) => {
         let searchPhones = event.detail;
 
         // перенести выполнение кода в каталог
 
-                  let filterPhone =[];
+                let filterPhone =[];
                 PhoneService.getAll( (phones) => {
                 phones.map( (phone) => {
                     if(~phone.id.indexOf(searchPhones)) {
@@ -95,6 +101,12 @@ export default class PhonesPage {
                 });
                 this._catalog.showPhones(filterPhone);
        });
+    });
+
+    this._filter.on ('backToMainPage', (event) => {
+        PhoneService.getAll( (phones) => {
+            this._catalog.showPhones(phones);
+        });
     });
 
     }

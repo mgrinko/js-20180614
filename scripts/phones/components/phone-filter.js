@@ -13,8 +13,14 @@ export default class PhoneFilter extends Component{
 
       let containerSearch = this._element.querySelector('[data-element="phone-input"]') ;
       let phoneSearch = containerSearch.value;
+      containerSearch.value ='';
       this._trigger('searchPhone',phoneSearch);
 
+
+  });
+
+  this.on ('click','[data-element="clear-search"]', (event) => {
+     this._trigger('backToMainPage');
   });
 
 
@@ -28,7 +34,9 @@ export default class PhoneFilter extends Component{
   
           <p>
             <input data-element="phone-input"> 
-            <button data-element="phone-search-btn">Search</button>
+            <button data-element="phone-search-btn" title="Search Phone">Search</button>
+            <button data-element="clear-search" style="font-weight: bolder"
+            title="Clear Search">X</button>
           </p>
 
           <p>
