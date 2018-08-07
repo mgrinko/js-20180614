@@ -3,12 +3,12 @@
 import HttpService from '../../common/services/http-service.js';
 
 const PhoneService = {
-  getAll(callback) {
-    HttpService.sendRequest('phones.json', callback)
+  getAll(callback, searchQuery, sortBy) {
+    HttpService.sendRequest(`phones.json?searchQuery=${ searchQuery }&sort=${ sortBy }`, callback);
   },
 
   get(phoneId, callback) {
-    HttpService.sendRequest(`phones/${phoneId}.json`, callback)
+    HttpService.sendRequest(`phones/${phoneId}.json`, callback);
   },
 };
 

@@ -1,4 +1,5 @@
-const API_URL = 'https://mgrinko.github.io/js-20180614/api/'
+const API_URL = 'https://for93t.github.io/js-20180614-by-for93t/api/';
+// const API_URL = 'http://localhost:3000/api/';
 
 const HttpService = {
   sendRequest(url, successCallback, errorCallback) {
@@ -18,6 +19,6 @@ const HttpService = {
       errorCallback(new Error(xhr.status + ': ' + xhr.statusText));
     }
   }
-}
+};
 
 export default HttpService;

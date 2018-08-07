@@ -4,6 +4,15 @@
   display: none;
 }
 
+.js-remove-item-from-shopping-cart {
+  float: right;
+  cursor: pointer;
+}
+
+.js-sidebar {
+  /*position: fixed;*/
+}
+
 body {
   padding-top: 20px;
   background-color: lightgoldenrodyellow;
