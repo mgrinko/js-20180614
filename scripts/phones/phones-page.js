@@ -41,6 +41,7 @@ export default class PhonesPage {
 
       this._shoppingCart.addItem(phoneId);
     });
+
   }
 
   _initViewer() {
@@ -69,7 +70,18 @@ export default class PhonesPage {
   _initFilters() {
     this._filter = new PhonesFilter({
       element: this._element.querySelector('[data-component="phones-filter"]'),
-    })
+    });
+
+    this._filter.on('filterTextChanged', (event) =>{
+      let text = event.detail;
+      this._catalog.filterByText(text);
+    });
+
+    this._filter.on('sortTypeChanged', (event) =>{
+      let sortType = event.detail;
+      this._catalog.sortBy(sortType);
+    });
+
   }
 
   _render() {

@@ -1,10 +1,14 @@
 'use strict'
 
 import Component from '../../component.js'
+import { SORT_NONE, SORT_BY_NAME, SORT_BY_AGE_ASC, SORT_BY_AGE_DESC } from './phones-filter.js';
 
 export default class PhoneCatalog extends Component {
   constructor({ element }) {
     super({ element })
+
+    this._sortType = SORT_NONE;
+    this._filterText = '';
 
     this.on('click', '[data-element="phone-link"]', (event) => {
       let phoneLink = event.delegateTarget;
@@ -19,14 +23,41 @@ export default class PhoneCatalog extends Component {
 
       this._trigger('addToShoppingCart', phoneElement.dataset.phoneId);
     });
+
   }
 
   showPhones(phones) {
     this._phones = phones;
+    this._allphones = phones;
 
     this._render();
 
     this.show();
+  }
+
+  filterByText(filterText){ 
+    this._filterText = filterText;
+    this._transform();
+  }
+
+  sortBy(sortType){
+    this._sortType = sortType;
+    this._transform();
+  }
+
+  _transform(){
+    let promise = new Promise((resolve, reject) => {
+      resolve(filterAndSortPhones(this._allphones, this._filterText, this._sortType));
+    });
+    
+    promise
+      .then(
+        result => {
+          this._phones = result;
+          this._render();
+        }, 
+        error => console.log("Error: " + error) 
+      );
   }
 
   _render() {
@@ -57,7 +88,7 @@ export default class PhoneCatalog extends Component {
               href="#!/phones/${ phone.id }"
               data-element="phone-link"
             >
-              ${ phone.name }
+              ${ phone.name } + <b>(Age: ${ phone.age })</b>
             </a>
             
             <p>${ phone.snippet }</p>
@@ -67,4 +98,42 @@ export default class PhoneCatalog extends Component {
       </ul>
     `;
   }
+}
+
+
+function filterAndSortPhones(allphones, filterText, sortType) {
+  // apply filter
+  let results = allphones;
+
+  if(filterText && (filterText.length!==0)){
+    results = results.filter(phone =>{
+      return phone.name.toUpperCase().indexOf(filterText.toUpperCase(), 0)!=-1;
+    });
+  }
+
+  // apply sort
+  let fnSortAge = (a,b) => {
+    if (a.age > b.age) return 1;
+    if (a.age < b.age) return -1;
+    return 0;
+  }
+
+  switch (sortType) {
+    case SORT_BY_NAME:
+      results = results.sort( (a,b) =>{
+         if (a.name.toUpperCase() > b.name.toUpperCase()) return 1;
+         if (a.name.toUpperCase() < b.name.toUpperCase()) return -1;
+         return 0;
+      });   
+      break;
+    case SORT_BY_AGE_ASC:
+      results = results.sort(fnSortAge);
+      break;
+    case SORT_BY_AGE_DESC:
+      results = results.sort((a,b) => -fnSortAge(a,b));
+      break;
+    default:
+      break;
+  }
+  return results;
 }
