@@ -39,32 +39,27 @@ export default class PhoneCatalog extends Component{
             let phoneElement = addButton.closest('[data-element="phone"]');
             this._trigger('addPhoneCart', phoneElement.dataset.phoneId);
         });
+
+
+
+
     }
 
     showPhones (phones) {
 
 
         this._phones = phones;
-        if (Object.keys(phones).length == 0) {
-            console.log('tut');
+        if (Object.keys(phones).length === 0) {
+           // console.log('tut');
             this._renderNo();
          //   super.show();
         } else {
             this._render();
             super.show();
         }
+        return this._phones;
     }
 
-
- /*  showFilterPhone (phones) {
-        console.log('tut');
-     this._phones = phones;
-     console.log(phones);
-     for (let i = 0; i < phones.length; i++) {
-         console.log(phones[i].id);
-     }
-     this._render();
-    };*/
 
 
     _render() {

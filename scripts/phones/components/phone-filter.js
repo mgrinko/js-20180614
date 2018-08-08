@@ -2,7 +2,7 @@
 
 
 import Component from "../../component.js";
-import PhoneService from '/scripts/phones/services/phone-service.js';
+
 
 export default class PhoneFilter extends Component{
  constructor ({ element }) {
@@ -21,6 +21,11 @@ export default class PhoneFilter extends Component{
 
   this.on ('click','[data-element="clear-search"]', (event) => {
      this._trigger('backToMainPage');
+  });
+  this.on('change', '[data-element="phone-sort"]', (event) => {
+     let fieldSort = this._element.querySelector('[data-element="phone-sort"]');
+     let paramSort = fieldSort.value;
+     this._trigger('phoneSort',paramSort);
   });
 
 
@@ -41,7 +46,7 @@ export default class PhoneFilter extends Component{
 
           <p>
             Sort by:
-            <select>
+            <select data-element="phone-sort">
               <option value="name">Alphabetical</option>
               <option value="age">Newest</option>
             </select>

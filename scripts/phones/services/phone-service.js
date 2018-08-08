@@ -13,7 +13,7 @@ const PhoneService = {
     },
 
 
-}
+};
 
 export default PhoneService;
 

@@ -10,6 +10,7 @@ export default class PhonesPage {
  constructor ({ element }) {
 
   this._element = element;
+  this._phoneInPage = null;
 
   this._render();
 
@@ -17,8 +18,6 @@ export default class PhonesPage {
   this._initViewer ();
   this._initShopCart();
   this._initPhoneFilter();
-
-
  }
 
  _initCatalog () {
@@ -33,7 +32,8 @@ export default class PhonesPage {
      });
 
      PhoneService.getAll( (phones) => {
-         this._catalog.showPhones(phones);
+         this._phoneInPage = this._catalog.showPhones(phones);
+        // console.log('phoneInPage',phoneInPage);
      });
 
      this._catalog.on ('phoneSelected', (event) => {
@@ -95,20 +95,47 @@ export default class PhonesPage {
                 PhoneService.getAll( (phones) => {
                 phones.map( (phone) => {
                     if(~phone.id.indexOf(searchPhones)) {
-                    filterPhone.push(phone);//[i] = phone;
+                    filterPhone.push(phone);
 
                     }
+                    phones = filterPhone; //!!!!
                 });
-                this._catalog.showPhones(filterPhone);
+               this._phoneInPage =  this._catalog.showPhones(phones);
+               //console.log('a',a);
        });
     });
 
     this._filter.on ('backToMainPage', (event) => {
         PhoneService.getAll( (phones) => {
-            this._catalog.showPhones(phones);
+         this._phoneInPage = this._catalog.showPhones(phones);
         });
     });
 
+    this._filter.on ('phoneSort', (event) => {
+        let paramSort = event.detail;
+        let phones = this._phoneInPage;
+        console.log(paramSort);
+        console.log(phones);
+        // функция сортировки по параметру и вывод результата на страницу
+        let arraySortFromParamSort =[];
+        let filterPhone = [];
+              phones.forEach( (phone)=> {
+                 arraySortFromParamSort.push(phone[paramSort]);
+              });
+               arraySortFromParamSort.sort();
+               arraySortFromParamSort.forEach((i) => {
+                   console.log(i);
+                   phones.map((phone) =>{
+                      if (phone[paramSort] === i) {
+                          filterPhone.push(phone);
+                      }
+                   });
+               });
+              this._catalog.showPhones(filterPhone);
+
+
+
+    });
     }
 
 
@@ -135,4 +162,5 @@ export default class PhonesPage {
     </div>
 </div>`;
  }
+
 }
