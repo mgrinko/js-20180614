@@ -10,18 +10,37 @@ const PhoneService = {
   get(phoneId, callback) {
     // HttpService.sendRequest(`phones/${phoneId}.json`, callback)
     let promise = this._sendRequest(`phones/${phoneId}.json`);
-    promise.then(callback)
+    promise.then(callback);
+
+    promise.then((result) => {
+      console.log(result)
+    });
+
+    setTimeout(() => {
+      promise.then((result) => {
+        console.log('!!!!!')
+      });
+    }, 1000)
   },
 
   _sendRequest(url) {
     let promise = {
+      _result: null,
+      _status: 'pending',
       _successCallbacks: [],
 
       then(successCallback) {
-        this._successCallbacks.push(successCallback);
+        if (this._status === 'fulfilled') {
+          successCallback(this._result)
+        } else {
+          this._successCallbacks.push(successCallback);
+        }
       },
 
       _resolve(data) {
+        this._status = 'fulfilled';
+        this._result = data;
+
         this._successCallbacks.forEach(callback => {
           callback(data)
         });
