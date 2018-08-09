@@ -1,4 +1,5 @@
-const API_URL = 'https://mgrinko.github.io/js-20180614/api/'
+// const API_URL = 'https://mgrinko.github.io/js-20180614/api/'
+const API_URL = '/api/'
 
 const HttpService = {
   sendRequest(url) {

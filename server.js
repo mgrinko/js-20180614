@@ -15,7 +15,7 @@ function accept(req, res) {
   if (req.url.startsWith('/api')) {
     setTimeout(() => {
       file.serve(req, res);
-    }, 500);
+    }, 5000);
   } else {
     file.serve(req, res);
   }
