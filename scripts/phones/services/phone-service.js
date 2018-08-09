@@ -2,6 +2,34 @@
 
 import HttpService from '../../common/services/http-service.js';
 
+
+class MyPromise {
+  constructor (behaviorFunction) {
+    this._result = null;
+    this._status = 'pending';
+    this._successCallbacks = [];
+
+    behaviorFunction(this._resolve.bind(this))
+  }
+
+  then(successCallback) {
+    if (this._status === 'fulfilled') {
+      successCallback(this._result);
+    } else {
+      this._successCallbacks.push(successCallback);
+    }
+  }
+
+  _resolve(data) {
+    this._status = 'fulfilled';
+    this._result = data;
+
+    this._successCallbacks.forEach(callback => {
+      callback(data)
+    });
+  }
+}
+
 const PhoneService = {
   getAll(callback) {
     HttpService.sendRequest('phones.json', callback)
@@ -24,32 +52,15 @@ const PhoneService = {
   },
 
   _sendRequest(url) {
-    let promise = {
-      _result: null,
-      _status: 'pending',
-      _successCallbacks: [],
-
-      then(successCallback) {
-        if (this._status === 'fulfilled') {
-          successCallback(this._result)
-        } else {
-          this._successCallbacks.push(successCallback);
-        }
-      },
-
-      _resolve(data) {
-        this._status = 'fulfilled';
-        this._result = data;
-
-        this._successCallbacks.forEach(callback => {
-          callback(data)
+    let promise = new MyPromise(
+      (resolve) => {
+        HttpService.sendRequest(url, (data) => {
+          resolve(data)
         });
       }
-    };
+    );
 
-    HttpService.sendRequest(url, (data) => {
-      promise._resolve(data)
-    })
+
 
     return promise
   }
