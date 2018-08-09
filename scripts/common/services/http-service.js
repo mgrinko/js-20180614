@@ -9,6 +9,12 @@ const HttpService = {
     xhr.send();
 
     xhr.onload = () => {
+      if (xhr.status !== 200) {
+        errorCallback('123123');
+
+        return;
+      }
+
       let responseData = JSON.parse(xhr.responseText);
 
       successCallback(responseData);
