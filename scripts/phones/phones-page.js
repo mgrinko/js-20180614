@@ -1,83 +1,109 @@
-'use strict'
+'use strict';
 
 import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import PhoneService from './services/phone-service.js';
+import ShoppingCart from './components/shopping-cart.js';
 
 export default class PhonesPage {
-  constructor({ element }) {
-    this._element = element;
+    constructor({element}) {
+        this._element = element;
 
-    this._render();
+        this._render();
 
-    this._initCatalog();
-    this._initViewer();
-  }
+        this._initCatalog();
+        this._initViewer();
+        this._initShoppingCart();
+        this._initFilters();
+    }
 
-  _initCatalog() {
-    this._catalog = new PhoneCatalog({
-      element: this._element.querySelector('[data-component="phone-catalog"]'),
-      phones: PhoneService.getAll(),
+    _initCatalog() {
+        this._catalog = new PhoneCatalog({
+            element: this._element.querySelector('[data-component="phone-catalog"]'),
+        });
 
-      onPhoneSelected: (phoneId) => {
-        let phone = PhoneService.get(phoneId);
+        PhoneService.getAll(phones => {
+            this._catalog.showPhones(phones);
+        });
 
-        this._catalog.hide();
-        this._viewer.showPhone(phone);
-      }
-    });
-  }
+        this._catalog.on('phoneSelected', (ev) => {
+            let phoneId = ev.detail;
 
-  _initViewer() {
-    this._viewer = new PhoneViewer({
-      element: this._element.querySelector('[data-component="phone-viewer"]'),
-    });
+            PhoneService.get(phoneId, phone => {
+                this._catalog.hide();
+                this._viewer.showPhone(phone);
+            });
+        });
 
-    this._viewer.on('back', () => {
-      this._viewer.hide();
-      this._catalog.show();
-    });
-  }
+        this._catalog.on('addToShoppingCart', (ev) => {
+            let phoneId = ev.detail;
 
-  _render() {
-    this._element.innerHTML = `
-      <div class="container-fluid">
-        <div class="row">
-      
-          <!--Sidebar-->
-          <div class="col-md-2">
-            <section>
-              <p>
-                Search:
-                <input>
-              </p>
-      
-              <p>
-                Sort by:
-                <select>
-                  <option value="name">Alphabetical</option>
-                  <option value="age">Newest</option>
-                </select>
-              </p>
-            </section>
-      
-            <section>
-              <p>Shopping Cart</p>
-              <ul>
-                <li>Phone 1</li>
-                <li>Phone 2</li>
-                <li>Phone 3</li>
-              </ul>
-            </section>
-          </div>
-      
-          <!--Main content-->
-          <div class="col-md-10">
-            <div data-component="phone-catalog"></div>
-            <div data-component="phone-viewer" class="js-hidden"></div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
+            this._shoppingCart.addItem(phoneId);
+        });
+    }
+
+    _initViewer() {
+        this._viewer = new PhoneViewer({
+            element: this._element.querySelector('[data-component="phone-viewer"]'),
+        });
+
+        this._viewer.on('back', () => {
+            this._catalog.show();
+            this._viewer.hide();
+        });
+
+        this._viewer.on('add', (ev) => {
+            let phoneId = ev.detail;
+
+            this._shoppingCart.addItem(phoneId);
+        });
+    }
+
+    _initShoppingCart() {
+        this._shoppingCart = new ShoppingCart({
+            element: this._element.querySelector('[data-component="shopping-cart"]'),
+        });
+    }
+
+    _initFilters() {
+    }
+
+    _render() {
+        this._element.innerHTML = `
+            <div class="container-fluid">
+                <div class="row">
+            
+                    <!--Sidebar-->
+                    <div class="col-md-2">
+                        <section>
+                            <div data-component="phones-filter">
+                                <p>
+                                    Search:
+                                    <input>
+                                </p>
+                
+                                <p>
+                                    Sort by:
+                                    <select>
+                                        <option value="name">Alphabetical</option>
+                                        <option value="age">Newest</option>
+                                    </select>
+                                </p>
+                            </div>
+                        </section>
+            
+                        <section>
+                            <div data-component="shopping-cart"></div>
+                        </section>
+                    </div>
+            
+                    <!--Main content-->
+                    <div class="col-md-10">
+                        <div data-component="phone-catalog"></div>
+                        <div data-component="phone-viewer" class="js-hidden"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 }

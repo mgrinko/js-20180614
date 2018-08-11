@@ -1,41 +1,46 @@
-'use strict'
+'use strict';
 
 const HIDDEN_CLASS = 'js-hidden';
 
 export default class Component {
-  constructor({ element }) {
-    this._element = element;
-  }
+    constructor({element}) {
+        this._element = element;
+    }
 
-  show() {
-    this._element.classList.remove(HIDDEN_CLASS)
-  }
+    show() {
+        this._element.classList.remove(HIDDEN_CLASS);
+    }
 
-  hide() {
-    this._element.classList.add(HIDDEN_CLASS)
-  }
+    hide() {
+        this._element.classList.add(HIDDEN_CLASS);
+    }
 
-  // on(eventName, selector, callback) {
-  //   this._element.addEventListener(eventName, (event) => {
-  //     let delegateTarget = event.target.closest(selector);
+    _trigger(eventName, data) {
+        let customEvent = new CustomEvent(eventName, {
+            detail: data
+        });
 
-  //     if (!delegateTarget) {
-  //       return;
-  //     }
+        this._element.dispatchEvent(customEvent);
+    }
 
-  //     event.delegateTarget = delegateTarget;
+    on(eventName, selector, callback) {
+        if (!callback) {
+          callback = selector;
+          this._element.addEventListener(eventName, callback);
 
-  //     callback(event);
-  //   });
-  // }
+          return;
+        }
 
-  on(eventName, callback) {
-    this._element.addEventListener(eventName, callback);
-  }
+        this._element.addEventListener(eventName, (ev) => {
+            let delegateTarget = ev.target.closest(selector);
 
-  _trigger(eventName, detail) {
-    let customEvent = new CustomEvent(eventName, { detail });
+            if (!delegateTarget) {
+                return;
+            }
 
-    this._element.dispatchEvent(customEvent);
-  }
+            ev.delegateTarget = delegateTarget;
+
+            callback(ev);
+        });
+    }
 }
