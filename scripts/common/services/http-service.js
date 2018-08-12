@@ -8,16 +8,22 @@ const HttpService = {
         xhr.open(method, API_URL + url, true);
         xhr.send();
 
+        xhr.onerror = () => {
+            errorCallback(new Error(xhr.status + ': 123' + xhr.statusText));
+        };
+
         xhr.onload = () => {
+            if (xhr.status !== 200) {
+                errorCallback('Неправильный url');
+
+                return;
+            }
+
             let responseData = JSON.parse(xhr.responseText);
 
             successCallback(responseData);
         };
-
-        xhr.onerror = () => {
-            errorCallback(new Error(xhr.status + ': ' + xhr.statusText));
-        };
     }
-}
+};
 
 export default HttpService;
