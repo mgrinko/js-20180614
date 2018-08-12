@@ -7,13 +7,15 @@ let file = new static.Server('.', {
         // 'Access-Control-Allow-Methods': 'POST',
         // 'Access-Control-Allow-Headers': 'Content-Type',
     }
-});
+})
+
+const DELAY = 3000;
 
 function accept(req, res) {
     if (req.url.startsWith('/api')) {
         setTimeout(() => {
             file.serve(req, res);
-        }, 2500);
+        }, DELAY);
     } else {
         file.serve(req, res);
     }

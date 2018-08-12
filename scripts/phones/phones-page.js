@@ -30,8 +30,17 @@ export default class PhonesPage {
         this._catalog.on('phoneSelected', ev => {
             let phoneId = ev.detail;
 
-            PhoneService.get(phoneId)
-                .then(phone => {
+            let phonePromise = PhoneService.get(phoneId);
+            let clickPromise = new Promise(resolve => {
+                document.oncontextmenu = () => {
+                    resolve();
+                };
+            });
+
+            clickPromise
+                .then(() => phonePromise)
+            // Promise.all([phonePromise, clickPromise])
+                .then((phone) => {
                     this._catalog.hide();
                     this._viewer.showPhone(phone);
                 });

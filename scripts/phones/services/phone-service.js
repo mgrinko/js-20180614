@@ -11,8 +11,7 @@ const PhoneService = {
 
                 return sortedPhones;
             });
-        
-        console.log(_promise, 'promise');
+
         return _promise;
     },
 
