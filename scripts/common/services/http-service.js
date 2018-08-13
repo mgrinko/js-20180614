@@ -52,6 +52,10 @@ class MyPromise {
       this._successCallbacks.push(successCallback);
       this._errorCallbacks.push(errorCallback);
     }
+
+    return new MyPromise(() => {
+      // ...
+    })
   }
 
   catch(errorCallback) {

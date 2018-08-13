@@ -31,16 +31,7 @@ export default class PhonesPage {
     this._catalog.on('phoneSelected', (event) => {
       let phoneId = event.detail;
 
-      let phonePromise = PhoneService.get(phoneId);
-      let clickPromise = new Promise((resolve) => {
-        document.oncontextmenu = () => {
-          resolve()
-        }
-      });
-
-      clickPromise
-        .then(() => phonePromise)
-      // Promise.all([phonePromise, clickPromise])
+      PhoneService.get(phoneId)
         .then((phone) => {
           this._catalog.hide();
           this._viewer.showPhone(phone);
@@ -80,7 +71,21 @@ export default class PhonesPage {
   _initFilters() {
     this._filter = new PhonesFilter({
       element: this._element.querySelector('[data-component="phones-filter"]'),
-    })
+    });
+
+    this._filter.on('sort', async (event) => {
+      PhoneService.getAll({ orderField: event.detail })
+        .then(phones => {
+          this._catalog.showPhones(phones);
+        })
+    });
+
+    this._filter.on('search', (event) => {
+      PhoneService.getAll({ query: event.detail })
+        .then((phones) => {
+          this._catalog.showPhones(phones);
+        });
+    });
   }
 
   _render() {
