@@ -74,17 +74,16 @@ export default class PhonesPage {
     });
 
     this._filter.on('sort', async (event) => {
-      PhoneService.getAll({ orderField: event.detail })
-        .then(phones => {
-          this._catalog.showPhones(phones);
-        })
+      let phones = await PhoneService.getAll({ orderField: event.detail });
+
+      this._catalog.showPhones(phones);
     });
 
-    this._filter.on('search', (event) => {
-      PhoneService.getAll({ query: event.detail })
-        .then((phones) => {
-          this._catalog.showPhones(phones);
-        });
+    this._filter.on('search', async (event) => {
+      let phones = await PhoneService.getAll({ query: event.detail })
+        .catch((e) => console.log(e))
+
+      this._catalog.showPhones(phones);
     });
   }
 
