@@ -1,6 +1,23 @@
 const webpack = require('webpack');
 const path = require('path');
 const isProd = process.env.NODE_ENV === 'production'
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
+let plugins = [
+  new webpack.DefinePlugin({
+    API_URL: isProd
+      ? "'https://mgrinko.github.io/js-20180614/api/'"
+      : "'http://localhost:3000/api/'",
+  })
+]
+
+if (isProd) {
+  plugins.push(
+    new UglifyJsPlugin({
+      sourceMap: isProd ? false : true,
+    })
+  )
+}
 
 module.exports = {
   mode: 'none',
@@ -37,13 +54,7 @@ module.exports = {
     ]
   },
 
-  plugins: [
-    new webpack.DefinePlugin({
-      API_URL: isProd
-        ? "'https://mgrinko.github.io/js-20180614/api/'"
-        : "'http://localhost:3000/api/'",
-    }),
-  ],
+  plugins: plugins,
 
   devServer: {
     contentBase: './public'
