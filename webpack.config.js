@@ -1,4 +1,6 @@
+const webpack = require('webpack');
 const path = require('path');
+const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   mode: 'none',
@@ -8,7 +10,7 @@ module.exports = {
     filename: 'build.js'
   },
 
-  devtool: 'source-map',
+  devtool: isProd ? false : 'source-map',
   watch: true,
 
   module: {
@@ -25,8 +27,19 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      API_URL: isProd
+        ? "'https://mgrinko.github.io/js-20180614/api/'"
+        : "'/api/'",
+    }),
+  ]
 };
+
+// const API_URL = 'https://mgrinko.github.io/js-20180614/api/'
+// const API_URL = '/api/'
 
 
 // const path = require('path');

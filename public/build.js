@@ -1832,10 +1832,10 @@ var _classCallCheck2 = _interopRequireDefault(__webpack_require__(7));
 var _createClass2 = _interopRequireDefault(__webpack_require__(8));
 
 // const API_URL = 'https://mgrinko.github.io/js-20180614/api/'
-var API_URL = '/api/';
+// const API_URL = '/api/'
 var HttpService = {
   sendRequest: function sendRequest(url) {
-    return fetch(API_URL + url).then(function (response) {
+    return fetch('https://mgrinko.github.io/js-20180614/api/' + url).then(function (response) {
       return response.json();
     }); // return new Promise((resolve, reject) => {
     //   let method = 'GET';
@@ -1928,4 +1928,3 @@ function () {
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=build.js.map
