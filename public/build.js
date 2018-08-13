@@ -1454,8 +1454,6 @@ var _phoneViewer = _interopRequireDefault(__webpack_require__(20));
 
 __webpack_require__(41);
 
-console.log(_phoneViewer.default);
-
 var PhoneViewer =
 /*#__PURE__*/
 function (_Component) {
@@ -2856,7 +2854,7 @@ exports = module.exports = __webpack_require__(43)(false);
 
 
 // module
-exports.push([module.i, "body {\n  background-color: red;\n}\n", ""]);
+exports.push([module.i, "body {\n  background-color: green;\n}\n", ""]);
 
 // exports
 

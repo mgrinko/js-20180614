@@ -12,7 +12,6 @@ module.exports = {
   },
 
   devtool: isProd ? false : 'source-map',
-  watch: true,
 
   module: {
     rules: [
