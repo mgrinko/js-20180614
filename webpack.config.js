@@ -9,7 +9,7 @@ let plugins = [
       ? "'https://mgrinko.github.io/js-20180614/api/'"
       : "'http://localhost:3000/api/'",
   })
-]
+];
 
 if (isProd) {
   plugins.push(
