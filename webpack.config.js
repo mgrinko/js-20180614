@@ -4,6 +4,7 @@ const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   mode: 'none',
+
   entry: './scripts/app.js',
   output: {
     path: path.resolve(__dirname, 'public'),
@@ -15,6 +16,10 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        test: /\.hbs$/,
+        loader: "handlebars-loader"
+      },
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
