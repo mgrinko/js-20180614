@@ -23,17 +23,28 @@ export default class PhonesPage {
       element: this._element.querySelector('[data-component="phone-catalog"]'),
     });
 
-    PhoneService.getAll((phones) => {
-      this._catalog.showPhones(phones)
-    });
+    PhoneService.getAll()
+      .then((phones) => {
+        this._catalog.showPhones(phones)
+      })
 
     this._catalog.on('phoneSelected', (event) => {
       let phoneId = event.detail;
 
-      PhoneService.get(phoneId, (phone) => {
-        this._catalog.hide();
-        this._viewer.showPhone(phone);
+      let phonePromise = PhoneService.get(phoneId);
+      let clickPromise = new Promise((resolve) => {
+        document.oncontextmenu = () => {
+          resolve()
+        }
       });
+
+      clickPromise
+        .then(() => phonePromise)
+      // Promise.all([phonePromise, clickPromise])
+        .then((phone) => {
+          this._catalog.hide();
+          this._viewer.showPhone(phone);
+        })
     });
 
     this._catalog.on('addToShoppingCart', (event) => {
