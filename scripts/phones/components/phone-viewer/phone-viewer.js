@@ -3,8 +3,7 @@
 import Component from '../../../component.js';
 import template from './phone-viewer.hbs';
 
-console.log(template)
-
+import './phone-viewer.css'
 
 export default class PhoneViewer extends Component {
 

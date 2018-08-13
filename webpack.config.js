@@ -21,6 +21,10 @@ module.exports = {
         loader: "handlebars-loader"
       },
       {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      },
+      {
         test: /\.js$/,
         exclude: /(node_modules)/,
         use: {
@@ -38,13 +42,14 @@ module.exports = {
     new webpack.DefinePlugin({
       API_URL: isProd
         ? "'https://mgrinko.github.io/js-20180614/api/'"
-        : "'/api/'",
+        : "'http://localhost:3000/api/'",
     }),
-  ]
-};
+  ],
 
-// const API_URL = 'https://mgrinko.github.io/js-20180614/api/'
-// const API_URL = '/api/'
+  devServer: {
+    contentBase: './public'
+  }
+};
 
 
 // const path = require('path');
