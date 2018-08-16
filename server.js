@@ -9,7 +9,7 @@ let file = new static.Server('.', {
     }
 })
 
-const DELAY = 3000;
+const DELAY = 0;
 
 function accept(req, res) {
     if (req.url.startsWith('/api')) {

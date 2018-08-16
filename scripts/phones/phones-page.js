@@ -4,6 +4,7 @@ import PhoneCatalog from './components/phone-catalog.js';
 import PhoneViewer from './components/phone-viewer.js';
 import PhoneService from './services/phone-service.js';
 import ShoppingCart from './components/shopping-cart.js';
+import PhonesFilter from './components/phone-filter.js';
 
 export default class PhonesPage {
     constructor({element}) {
@@ -30,16 +31,7 @@ export default class PhonesPage {
         this._catalog.on('phoneSelected', ev => {
             let phoneId = ev.detail;
 
-            let phonePromise = PhoneService.get(phoneId);
-            let clickPromise = new Promise(resolve => {
-                document.oncontextmenu = () => {
-                    resolve();
-                };
-            });
-
-            clickPromise
-                .then(() => phonePromise)
-            // Promise.all([phonePromise, clickPromise])
+            PhoneService.get(phoneId)
                 .then((phone) => {
                     this._catalog.hide();
                     this._viewer.showPhone(phone);
@@ -50,6 +42,12 @@ export default class PhonesPage {
             let phoneId = ev.detail;
 
             this._shoppingCart.addItem(phoneId);
+        });
+
+        this._catalog.on('phonesFilter', ev => {
+            let data = ev.detail;
+
+            console.log(data, 'data');
         });
     }
 
@@ -77,6 +75,23 @@ export default class PhonesPage {
     }
 
     _initFilters() {
+        this._filter = new PhonesFilter({
+            element: this._element.querySelector('[data-component="phones-filter"]'),
+        });
+
+        this._filter.on('sort', async (ev) => {
+            PhoneService.getAll({orderField: ev.detail})
+                .then(phones => {
+                    this._catalog.showPhones(phones);
+                })
+        });
+
+        this._filter.on('search', (ev) => {
+            PhoneService.getAll({query: ev.detail})
+                .then((phones) => {
+                    this._catalog.showPhones(phones);
+                });
+        });
     }
 
     _render() {
@@ -87,19 +102,9 @@ export default class PhonesPage {
                     <!--Sidebar-->
                     <div class="col-md-2">
                         <section>
-                            <div data-component="phones-filter">
-                                <p>
-                                    Search:
-                                    <input>
-                                </p>
-                
-                                <p>
-                                    Sort by:
-                                    <select>
-                                        <option value="name">Alphabetical</option>
-                                        <option value="age">Newest</option>
-                                    </select>
-                                </p>
+                            <div>
+                                <div data-component="phones-filter"></div>
+                                <div data-component="phones-sort"></div>
                             </div>
                         </section>
             

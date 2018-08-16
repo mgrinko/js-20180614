@@ -17,6 +17,12 @@ export default class PhoneViewer extends Component {
         this.on('click', '[data-element="phone-thumbs"]', (ev) => {
             this._element.querySelector('[data-element="phone-base-img"]').src = ev.target.src;
         });
+
+        this.on('phonesFilter', ev => {
+            let data = ev.detail;
+
+            console.log(data, 'data');
+        });
     }
 
     showPhone(phone) {

@@ -1,5 +1,5 @@
-// const API_URL = 'https://mgrinko.github.io/js-20180614/api/';
-const API_URL = '/api/';
+const API_URL = 'https://mgrinko.github.io/js-20180614/api/';
+// const API_URL = '/api/';
 
 class MyPromise {
     constructor(behaviorFunction) {
@@ -20,6 +20,10 @@ class MyPromise {
             this._successCallBacks.push(successCallback);
             this._errorCallBacks.push(errorCallback);
         }
+
+        return new MyPromise(() => {
+            // ...
+        });
     };
 
     catch(errorCallback) {

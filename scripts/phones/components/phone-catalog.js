@@ -19,6 +19,10 @@ export default class PhoneCatalog extends Component {
 
             this._trigger('addToShoppingCart', phoneElement.dataset.phoneId);
         });
+
+        this.on('phonesFilter', ev => {
+            let data = ev.detail;
+        });
     }
 
     showPhones(phones) {

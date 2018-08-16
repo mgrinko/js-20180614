@@ -13,6 +13,12 @@ export default class ShoppingCart extends Component {
 
             this.removeItem(item);
         });
+
+        this.on('phonesFilter', ev => {
+            let data = ev.detail;
+
+            console.log(data, 'data');
+        });
     }
 
     addItem(item) {
