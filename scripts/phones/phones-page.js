@@ -80,17 +80,16 @@ export default class PhonesPage {
         });
 
         this._filter.on('sort', async (ev) => {
-            PhoneService.getAll({orderField: ev.detail})
-                .then(phones => {
-                    this._catalog.showPhones(phones);
-                })
+            let phones = await PhoneService.getAll({ orderField: ev.detail });
+
+            this._catalog.showPhones(phones);
         });
 
-        this._filter.on('search', (ev) => {
-            PhoneService.getAll({query: ev.detail})
-                .then((phones) => {
-                    this._catalog.showPhones(phones);
-                });
+        this._filter.on('search', async (ev) => {
+            let phones = await PhoneService.getAll({ query: ev.detail })
+                .catch((e) => console.log(e))
+
+            this._catalog.showPhones(phones);
         });
     }
 
