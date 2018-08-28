@@ -1,32 +1,34 @@
 // const API_URL = 'https://mgrinko.github.io/js-20180614/api/'
-const API_URL = '/api/'
+// const API_URL = '/api/'
 
 const HttpService = {
   sendRequest(url) {
+    return fetch(API_URL + url)
+      .then(response => response.json())
 
-    return new Promise((resolve, reject) => {
-      let method = 'GET';
-      let xhr = new XMLHttpRequest();
-
-      xhr.open(method, API_URL + url, true);
-      xhr.send();
-
-      xhr.onload = () => {
-        if (xhr.status !== 200) {
-          reject(new Error(xhr.status + ': ' + xhr.statusText));
-
-          return;
-        }
-
-        let responseData = JSON.parse(xhr.responseText);
-
-        resolve(responseData);
-      };
-
-      xhr.onerror = () => {
-        reject(new Error(xhr.status + ': ' + xhr.statusText));
-      }
-    })
+    // return new Promise((resolve, reject) => {
+    //   let method = 'GET';
+    //   let xhr = new XMLHttpRequest();
+    //
+    //   xhr.open(method, API_URL + url, true);
+    //   xhr.send();
+    //
+    //   xhr.onload = () => {
+    //     if (xhr.status !== 200) {
+    //       reject(new Error(xhr.status + ': ' + xhr.statusText));
+    //
+    //       return;
+    //     }
+    //
+    //     let responseData = JSON.parse(xhr.responseText);
+    //
+    //     resolve(responseData);
+    //   };
+    //
+    //   xhr.onerror = () => {
+    //     reject(new Error(xhr.status + ': ' + xhr.statusText));
+    //   }
+    // })
   }
 }
 
@@ -52,6 +54,10 @@ class MyPromise {
       this._successCallbacks.push(successCallback);
       this._errorCallbacks.push(errorCallback);
     }
+
+    return new MyPromise(() => {
+      // ...
+    })
   }
 
   catch(errorCallback) {

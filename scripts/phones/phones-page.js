@@ -1,7 +1,7 @@
 'use strict'
 
 import PhoneCatalog from './components/phone-catalog.js';
-import PhoneViewer from './components/phone-viewer.js';
+import PhoneViewer from './components/phone-viewer/phone-viewer.js';
 import PhonesFilter from './components/phones-filter.js';
 import ShoppingCart from './components/shopping-cart.js';
 import PhoneService from './services/phone-service.js';
@@ -31,20 +31,11 @@ export default class PhonesPage {
     this._catalog.on('phoneSelected', (event) => {
       let phoneId = event.detail;
 
-      let phonePromise = PhoneService.get(phoneId);
-      let clickPromise = new Promise((resolve) => {
-        document.oncontextmenu = () => {
-          resolve()
-        }
-      });
-
-      clickPromise
-        .then(() => phonePromise)
-      // Promise.all([phonePromise, clickPromise])
+      PhoneService.get(phoneId)
         .then((phone) => {
           this._catalog.hide();
           this._viewer.showPhone(phone);
-        })
+        });
     });
 
     this._catalog.on('addToShoppingCart', (event) => {
@@ -80,7 +71,20 @@ export default class PhonesPage {
   _initFilters() {
     this._filter = new PhonesFilter({
       element: this._element.querySelector('[data-component="phones-filter"]'),
-    })
+    });
+
+    this._filter.on('sort', async (event) => {
+      let phones = await PhoneService.getAll({ orderField: event.detail });
+
+      this._catalog.showPhones(phones);
+    });
+
+    this._filter.on('search', async (event) => {
+      let phones = await PhoneService.getAll({ query: event.detail })
+        .catch((e) => console.log(e))
+
+      this._catalog.showPhones(phones);
+    });
   }
 
   _render() {
