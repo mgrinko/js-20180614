@@ -1,4 +1,7 @@
 "use strict"
+
+const  API_URL = '/api';
+
 const HttpService = {
 
    _sendRequest(url, successCallback, errorCallback)
