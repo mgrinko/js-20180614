@@ -36,7 +36,7 @@ export default class PhonesPage {
         // console.log('phoneInPage',phoneInPage);
      });
 
-     this._catalog.on ('phoneSelected', (event) => {
+     this._catalog.on('phoneSelected', (event) => {
         let phoneId = event.detail;
          PhoneService.get(phoneId, (phone) => {
              this._catalog.hide();
@@ -59,7 +59,7 @@ export default class PhonesPage {
          }*/
      });
 
-     this._viewer.on ('moveBack', () => {
+     this._viewer.on('moveBack', () => {
          this._viewer.hide();
          PhoneService.getAll( (phones) => {
              this._catalog.showPhones(phones);
@@ -67,7 +67,7 @@ export default class PhonesPage {
       //   this._catalog.show();
      });
 
-     this._viewer.on ('addPhoneCart', (event) => {
+     this._viewer.on('addPhoneCart', (event) => {
       let phoneId = event.detail;
       this._cart.addItem(phoneId);
      });
@@ -86,15 +86,15 @@ export default class PhonesPage {
         element: this._element.querySelector('[data-component="phone-filter"]')
     });
 
-    this._filter.on ('searchPhone', (event) => {
+    this._filter.on('searchPhone', (event) => {
         let searchPhones = event.detail;
 
         // перенести выполнение кода в каталог
 
                 let filterPhone =[];
                 PhoneService.getAll( (phones) => {
-                phones.map( (phone) => {
-                    if(~phone.id.indexOf(searchPhones)) {
+                phones.forEach( (phone) => {
+                    if(!(~phone.id.indexOf(searchPhones))) {
                     filterPhone.push(phone);
 
                     }
@@ -105,36 +105,33 @@ export default class PhonesPage {
        });
     });
 
-    this._filter.on ('backToMainPage', (event) => {
+    this._filter.on('backToMainPage', (event) => {
         PhoneService.getAll( (phones) => {
          this._phoneInPage = this._catalog.showPhones(phones);
         });
     });
 
-    this._filter.on ('phoneSort', (event) => {
+    this._filter.on('phoneSort', (event) => {
         let paramSort = event.detail;
         let phones = this._phoneInPage;
-        console.log(paramSort);
-        console.log(phones);
         // функция сортировки по параметру и вывод результата на страницу
         let arraySortFromParamSort =[];
         let filterPhone = [];
               phones.forEach( (phone)=> {
-                 arraySortFromParamSort.push(phone[paramSort]);
+                     arraySortFromParamSort.push(phone[paramSort]);
               });
-               arraySortFromParamSort.sort();
-               arraySortFromParamSort.forEach((i) => {
-                   console.log(i);
-                   phones.map((phone) =>{
-                      if (phone[paramSort] === i) {
-                          filterPhone.push(phone);
-                      }
+        arraySortFromParamSort.sort();
+
+        arraySortFromParamSort.forEach((i) => {
+            phones.map((phone) =>{
+
+                if (phone[paramSort] === i) {
+                    filterPhone.push(phone);
+                }
+
                    });
                });
-              this._catalog.showPhones(filterPhone);
-
-
-
+        this._catalog.showPhones(filterPhone);
     });
     }
 

@@ -49,7 +49,7 @@ export default class PhoneCatalog extends Component{
 
 
         this._phones = phones;
-        if (Object.keys(phones).length === 0) {
+        if (phones.length === 0) {
            // console.log('tut');
             this._renderNo();
          //   super.show();
