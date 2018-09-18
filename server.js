@@ -13,7 +13,7 @@ headers: {
 });
 
 function accept(req, res) {
-    if (req.url.startsWith('/api/')) {
+    if (req.url.startsWith('/api')) {
         setTimeout(() => {
             file.serve(req, res);
         }, 500);
