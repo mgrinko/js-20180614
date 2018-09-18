@@ -7,13 +7,13 @@ var file = new static.Server('.', {
 
 headers: {
     'Access-Control-Allow-Origin': 'https://yurlovr.github.io',
-      'Access-Control-Allow-Methods': 'GET',
-      'Access-Control-Allow-Headers': 'Content-Type'
+      // 'Access-Control-Allow-Methods': 'POST',
+      // 'Access-Control-Allow-Headers': 'Content-Type'
 }
 });
 
 function accept(req, res) {
-    if (req.url.startsWith('/api')) {
+    if (req.url.startsWith('/api/')) {
         setTimeout(() => {
             file.serve(req, res);
         }, 500);

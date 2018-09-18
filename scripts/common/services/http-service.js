@@ -1,6 +1,6 @@
 "use strict"
 
-const  API_URL = '/api/';
+  // const API_URL = '/api/'
 
 const HttpService = {
 
@@ -10,7 +10,7 @@ const HttpService = {
 
     let xhr = new XMLHttpRequest();
 
-    xhr.open(method, API_URL + url, true);
+    xhr.open(method,  url, true);
     xhr.send();
 
     xhr.onload = () => {
