@@ -5,11 +5,11 @@ import HttpService from  '../../common/services/http-service.js';
 
 const PhoneService = {
     getAll(callback) {
-        HttpService._sendRequest('/api/phones.json',  callback)
+        HttpService._sendRequest('phones.json',  callback)
     },
 
     get(phoneId, callback) {
-        HttpService._sendRequest(`/api/phones/${phoneId}.json`,  callback)
+        HttpService._sendRequest(`phones/${phoneId}.json`,  callback)
     },
 
 
